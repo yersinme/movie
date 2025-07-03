@@ -1,31 +1,54 @@
 <script setup lang="ts">
+const { data: movies } = await useAsyncData('movies', async () => {
+  const trending = await $fetch('/api/movies/trending')
+  const list = trending.movies
 
-const { data: movies } = await useFetch('/api/movies/trending', {
-  transform: res =>
-    res.movies.map((m: any) => ({
-      id: m.imdb_id,
-      title: m.title,
-      year: m.year,
-      backgroundImage: '/images/test.png'
-    }))
+  return await Promise.all(
+    list.map(async (m: any) => {
+      const details = await $fetch(`/api/movies/${m.imdb_id}`)
+      return {
+        id: m.imdb_id,
+        title: m.title,
+        year: m.year,
+        genres: (details.genres ?? []).slice(0, 2).join(', '),
+        backgroundImage: '/images/test.png'
+      }
+    })
+  )
 })
 
 const handleToggleFavorite = (id: string | number) => {}
 </script>
 
 <template>
-  <div>
+<div class="card-section">
+  <h2>Trending</h2>
+   <div class="card-wrapper">
     <UiCard
       v-for="movie in movies"
       :key="movie.id"
-      :id="movie.id"
-      :title="movie.title"
-      :year="movie.year"
-      :background-image="movie.backgroundImage"
+      v-bind="movie"
       :is-favorite="false"
       @toggle-favorite="handleToggleFavorite"
     />
   </div>
+</div>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+.card-section {
+  padding: 32px;
+
+}
+.card-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding-top: 16px;
+
+  > * {
+    flex: 1 1 calc(25% - 18px);
+    max-width: calc(25% - 18px);
+  }
+}
+</style>
