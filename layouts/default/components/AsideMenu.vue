@@ -33,6 +33,7 @@ import Logo from "~/components/ui/Logo.vue";
   padding: 40px;
   display: flex;
   flex-direction: column;
+  box-shadow: 20px 20px 40px 0px #6100C266;
 }
 
 .linksGroup {
