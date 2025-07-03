@@ -3,6 +3,7 @@ interface Props {
   id: string | number
   title: string
   year: string | number
+  genres: string
   backgroundImage: string
   isFavorite?: boolean
 }
@@ -11,13 +12,8 @@ const props = withDefaults(defineProps<Props>(), {
   isFavorite: true
 })
 
-const emit = defineEmits<{
-  toggleFavorite: [id: string | number]
-}>()
-
-const handleFavoriteClick = () => {
-  emit('toggleFavorite', props.id)
-}
+const emit = defineEmits<{ toggleFavorite: [id: string | number] }>()
+const handleFavoriteClick = () => emit('toggleFavorite', props.id)
 </script>
 
 <template>
@@ -25,23 +21,15 @@ const handleFavoriteClick = () => {
     <button
       class="favorite-btn"
       @click="handleFavoriteClick"
-      :class="{ 'active': isFavorite }"
+      :class="{ active: isFavorite }"
     >
-      <img
-        v-if="!isFavorite"
-        src="/icons/favourite-heart.svg"
-        alt="Add to favorites"
-      >
-      <img
-        v-else
-        src="/icons/favourites-heart-add.svg"
-        alt="Remove from favorites"
-      >
+      <img v-if="!isFavorite" src="/icons/favourite-heart.svg" alt="" />
+      <img v-else src="/icons/favourites-heart-add.svg" alt="" />
     </button>
 
     <div class="card-content">
       <h3 class="card-title">{{ title }}</h3>
-      <p class="card-year">{{ year }}</p>
+      <p class="card-info">{{ year }} • {{ genres }}</p>
     </div>
   </div>
 </template>
@@ -60,7 +48,7 @@ const handleFavoriteClick = () => {
   transition: transform 0.3s ease;
 
   &.has-background {
-    background-image: v-bind('`url(${backgroundImage})`');
+    background-image: v-bind('"url(" + backgroundImage + ")"');
   }
 
   &:hover {
@@ -94,7 +82,7 @@ const handleFavoriteClick = () => {
     img {
       width: 20px;
       height: 20px;
-      filter: brightness(0) invert(1); // Делает иконку белой
+      filter: brightness(0) invert(1);
     }
   }
 
@@ -128,5 +116,10 @@ const handleFavoriteClick = () => {
       font-weight: 400;
     }
   }
+}
+.card-info {
+  color: var(--black);
+  font-size: 14px;
+  font-weight: 400;
 }
 </style>
