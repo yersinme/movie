@@ -6,7 +6,7 @@ import AsideMenu from "~/layouts/default/components/AsideMenu.vue";
   <main>
     <AsideMenu/>
     <div class="content">
-    <NuxtPage/>
+      <NuxtPage/>
     </div>
   </main>
 </template>
@@ -15,7 +15,9 @@ import AsideMenu from "~/layouts/default/components/AsideMenu.vue";
 main {
   display: flex;
 }
-.content{
+
+.content {
   margin-left: 274px;
+  flex: 1;
 }
 </style>

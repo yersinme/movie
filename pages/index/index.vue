@@ -1,9 +1,13 @@
 <script setup lang="ts">
-
+import MainSection from "~/pages/index/components/MainSection.vue";
+import TrendingSection from "~/pages/index/components/TrendingSection.vue";
 </script>
 
 <template>
-<h1>Index</h1>
+<div>
+  <main-section/>
+  <trending-section/>
+</div>
 </template>
 
 <style scoped>
