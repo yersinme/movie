@@ -1,4 +1,4 @@
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async () => {
     const {API_URL} = useRuntimeConfig()
 
     const response = await $fetch(API_URL + '/docs.json', {})
