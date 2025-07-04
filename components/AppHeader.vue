@@ -38,9 +38,11 @@ import SearchBar from '~/components/SearchBar.vue'
 }
 .buttons {
   display: flex;
+  align-items: center;
   gap: 24px;
   .icon {
     cursor: pointer;
+    border-radius: 50%;
   }
 }
 </style>
