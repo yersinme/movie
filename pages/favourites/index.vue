@@ -1,33 +1,50 @@
 <script setup lang="ts">
-import {useFavouritesStore} from '@/stores/favourites'
-import type {ITrending} from "~/pages/index/interfaces";
+import { ref, onMounted } from 'vue'
+import { useFavouritesStore } from '@/stores/favourites'
+import type { ITrending } from '~/pages/index/interfaces'
+import AppHeader from '~/components/AppHeader.vue'
+import FilmCard from '~/components/FilmCard.vue'
+import Loader from '~/components/Loader.vue'
 
-const {initFavorites, ids} = useFavouritesStore()
-const tredingList = ref([]);
-onMounted(() => {
+const { initFavorites, ids } = useFavouritesStore()
+
+const trendingList = ref<ITrending[]>([])
+const isLoading = ref(true)
+
+onMounted(async () => {
   initFavorites()
-  $fetch('https://test-b0a77-default-rtdb.firebaseio.com/films.json')
-      .then(res => {
-        return Object.values(res)
-      })
-      .then((data: ITrending[]) => {
-        tredingList.value = data.filter(f => ids.includes(f.imdb_id));
-      })
+  try {
+    const res = await $fetch('https://test-b0a77-default-rtdb.firebaseio.com/films.json')
+    const all = Object.values(res || {}) as ITrending[]
+    trendingList.value = all.filter(f => ids.includes(f.imdb_id))
+  } catch (e) {
+    console.error('Ошибка загрузки фильмов:', e)
+  } finally {
+    isLoading.value = false
+  }
 })
 </script>
 
 <template>
   <div class="card-section">
-   <div class="card-header"> <AppHeader/></div>
+    <div class="card-header">
+      <AppHeader />
+    </div>
 
     <h2 class="card-title">Favourites</h2>
 
-    <div class="card-wrapper" v-if="tredingList?.length">
-      <film-card
-          v-for="m in tredingList"
-          :key="m.id"
-          :film="m"
+    <Loader v-if="isLoading" />
+
+    <div class="card-wrapper" v-else-if="trendingList.length">
+      <FilmCard
+        v-for="m in trendingList"
+        :key="m.imdb_id"
+        :film="m"
       />
+    </div>
+
+    <div v-else class="empty-text">
+      Нет избранных фильмов.
     </div>
   </div>
 </template>
@@ -38,7 +55,7 @@ onMounted(() => {
 }
 
 .card-header {
-padding-bottom: 65px;
+  padding-bottom: 65px;
 }
 
 .card-wrapper {
@@ -55,5 +72,10 @@ padding-bottom: 65px;
 
 .card-title {
   color: var(--white);
+}
+
+.empty-text {
+  color: #aaa;
+  padding: 16px;
 }
 </style>
