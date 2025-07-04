@@ -9,6 +9,11 @@
 </template>
 
 <style scoped lang="scss">
+.loader {
+  width: 100px;
+  margin: 0 auto;
+}
+
 .glitch {
   padding-top: 25px;
   position: relative;
