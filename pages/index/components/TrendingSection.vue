@@ -11,7 +11,6 @@ const props = defineProps({
   }
 })
 
-// Проверяем, есть ли данные
 const isLoading = computed(() => !props.trendingList?.length)
 </script>
 
