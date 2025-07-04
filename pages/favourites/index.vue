@@ -1,26 +1,59 @@
 <script setup lang="ts">
-import { useFavouritesStore } from '@/stores/favourites'
-const favs = useFavouritesStore()
+import {useFavouritesStore} from '@/stores/favourites'
+import type {ITrending} from "~/pages/index/interfaces";
 
-const { data: movies } = await useAsyncData('movies', () => null)
-
-const favouriteMovies = computed(() =>
-  movies.value?.filter(m => favs.ids.includes(m.id))
-)
+const {initFavorites, ids} = useFavouritesStore()
+const tredingList = ref([]);
+onMounted(() => {
+  initFavorites()
+  $fetch('https://test-b0a77-default-rtdb.firebaseio.com/films.json')
+      .then(res => {
+        return Object.values(res)
+      })
+      .then((data: ITrending[]) => {
+        tredingList.value = data.filter(f => ids.includes(f.imdb_id));
+      })
+})
 </script>
 
 <template>
   <div class="card-section">
-    <h2>Favourites</h2>
+   <div class="card-header"> <AppHeader/></div>
 
-    <div class="card-wrapper" v-if="favouriteMovies?.length">
-      <UiCard
-        v-for="m in favouriteMovies"
-        :key="m.id"
-        v-bind="m"
+    <h2 class="card-title">Favourites</h2>
+
+    <div class="card-wrapper" v-if="tredingList?.length">
+      <film-card
+          v-for="m in tredingList"
+          :key="m.id"
+          :film="m"
       />
     </div>
-
-    <p v-else>Ещё нет избранных фильмов 🙃</p>
   </div>
 </template>
+
+<style scoped lang="scss">
+.card-section {
+  padding: 40px;
+}
+
+.card-header {
+padding-bottom: 65px;
+}
+
+.card-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding-top: 16px;
+
+  > * {
+    flex: 1 1 calc(30% - 18px);
+    max-width: calc(30% - 18px);
+  }
+}
+
+.card-title {
+  color: var(--white);
+}
+</style>
