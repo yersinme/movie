@@ -5,7 +5,13 @@
     <div class="content">
       <h1 class="content-title">Insider</h1>
       <p class="content-text">2022 | Comedy horror | 1 Season</p>
-      <UiButton title="Watch now"/>
+      <div class="content-btns">
+        <UiButton title="Watch now"/>
+        <NuxtLink to="/favourites">
+          <img src="/icons/favourite-heart.svg" alt="">
+        </NuxtLink>
+      </div>
+
     </div>
   </section>
 </template>
@@ -42,5 +48,20 @@ import AppHeader from '~/components/AppHeader.vue'
 .content-text {
   color: #fff;
   font-size: 14px;
+}
+
+.content-btns {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+img {
+  margin-top: 5px;
+  width: 24px;
+  height: 24px;
+  padding: 15px;
+  background: var(--gray-gradient);
+  border-radius: 14px;
 }
 </style>
