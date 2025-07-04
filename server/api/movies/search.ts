@@ -1,15 +1,18 @@
 export default defineEventHandler(async (event) => {
   const query = getQuery(event)
-  const { API_URL, API_KEY, API_HOST } = useRuntimeConfig()
+  const { API_URL } = useRuntimeConfig()
 
-  const response = await $fetch(API_URL, {
-    params: { title: query.title },
-    headers: {
-      'X-RapidAPI-Key': API_KEY,
-      'X-RapidAPI-Host': API_HOST,
-      Type: 'get-movies-by-title'
-    }
-  })
+  const response = await $fetch(API_URL + '/films.json')
 
-  return { movies: response.movie_results ?? [] }
+  const movies = response ? Object.values(response) : []
+
+  if (query.title) {
+    const search = query.title.toLowerCase()
+    const filtered = movies.filter((movie: any) =>
+      movie.title?.toLowerCase().includes(search)
+    )
+    return { movies: filtered }
+  }
+
+  return { movies }
 })

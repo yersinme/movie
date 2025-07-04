@@ -40,6 +40,10 @@ export const MENU_ITEMS: [IMenuItem[], IMenuItem[], IMenuItem[]] = [
             icon: "sliders",
             title: "Settings",
             route: "/Settings",
-        }
+        }, {
+        icon: "log-out",
+        title: "Logout",
+        route: "/logout",
+    }
     ]
 ]

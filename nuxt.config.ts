@@ -11,8 +11,8 @@ export default defineNuxtConfig({
     devtools: {enabled: true},
     css: ['@/assets/styles/main.scss'],
     runtimeConfig: {
-        API_URL: 'https://movies-tv-shows-database.p.rapidapi.com',
-        API_KEY: '60bca2679bmsh641e8ae1be8d82dp180c95jsn25972c77facc',
+        API_URL: 'https://test-b0a77-default-rtdb.firebaseio.com',
+        API_KEY: 'f56618484emsh6b2006978ed9a39p182560jsn573a0d2a352d',
         API_HOST: 'movies-tv-shows-database.p.rapidapi.com',
         public: {
             apiBase: '/api'
