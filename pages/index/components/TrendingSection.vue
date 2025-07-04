@@ -1,37 +1,23 @@
 <script setup lang="ts">
-const { data: movies } = await useAsyncData('movies', async () => {
-  const trending = await $fetch('/api/movies/trending')
-  const list = trending.movies
+import FilmCard from "~/components/FilmCard.vue";
+import type {ITrending} from "~/pages/index/interfaces";
 
-  return await Promise.all(
-    list.map(async (m: any) => {
-      const details = await $fetch(`/api/movies/${m.imdb_id}`)
-      return {
-        id: m.imdb_id,
-        title: m.title,
-        year: m.year,
-        genres: (details.genres ?? []).slice(0, 2).join(', '),
-        backgroundImage: '/images/test.png'
-      }
-    })
-  )
+defineProps({
+  trendingList: {
+    type: Object as PropType<ITrending[]>,
+    required: true
+  }
 })
-
-
-import { useFavouritesStore } from '@/stores/favourites'
-const favs = useFavouritesStore()
 </script>
 
 <template>
   <div class="card-section">
-    <h2>Trending</h2>
-
+    <h2 class="card-title">Trending</h2>
     <div class="card-wrapper">
-      <UiCard
-        v-for="m in movies"
-        :key="m.id"
-        v-bind="m"
-        :is-favorite="favs.isFavourite(m.id)"
+      <film-card
+          v-for="m in trendingList"
+          :key="m.imdb_id"
+          :film="m"
       />
     </div>
   </div>
@@ -42,6 +28,7 @@ const favs = useFavouritesStore()
   padding: 32px;
 
 }
+
 .card-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -52,5 +39,12 @@ const favs = useFavouritesStore()
     flex: 1 1 calc(25% - 18px);
     max-width: calc(25% - 18px);
   }
+}
+
+.card-title {
+  color: var(--white);
+  font-weight: 600;
+  font-size: 20px;
+
 }
 </style>
