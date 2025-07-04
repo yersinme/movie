@@ -1,30 +1,41 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useFavouritesStore } from '@/stores/favourites'
+
 interface Props {
   id: string | number
   title: string
   year: string | number
   genres: string
   backgroundImage: string
-  isFavorite?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  isFavorite: true
-})
+const props = defineProps<Props>()
+const favs  = useFavouritesStore()
+const isFavourite = computed(() => favs.isFavourite(props.id))
 
-const emit = defineEmits<{ toggleFavorite: [id: string | number] }>()
-const handleFavoriteClick = () => emit('toggleFavorite', props.id)
+const router = useRouter()
+const openMovie = () => router.push(`/movies/${props.id}`)
+const toggleFav = (e: MouseEvent) => {
+  e.stopPropagation()
+  favs.toggle(props.id)
+}
 </script>
 
 <template>
-  <div class="movie-card" :class="{ 'has-background': backgroundImage }">
+  <div
+    class="movie-card"
+    :class="{ 'has-background': backgroundImage }"
+    @click="openMovie"
+  >
     <button
       class="favorite-btn"
-      @click="handleFavoriteClick"
-      :class="{ active: isFavorite }"
+      :class="{ active: isFavourite }"
+      @click="toggleFav"
     >
-      <img v-if="!isFavorite" src="/icons/favourite-heart.svg" alt="" />
-      <img v-else src="/icons/favourites-heart-add.svg" alt="" />
+      <img v-if="!isFavourite" src="/icons/favourite-heart.svg"  alt="" />
+      <img v-else             src="/icons/favourites-heart-add.svg" alt="" />
     </button>
 
     <div class="card-content">
@@ -33,6 +44,7 @@ const handleFavoriteClick = () => emit('toggleFavorite', props.id)
     </div>
   </div>
 </template>
+
 
 <style scoped lang="scss">
 .movie-card {
