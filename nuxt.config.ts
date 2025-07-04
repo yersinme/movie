@@ -1,5 +1,6 @@
 export default defineNuxtConfig({
-    modules: ['@nuxtjs/google-fonts', '@nuxtjs/device'],
+    modules: ['@nuxtjs/google-fonts', '@nuxtjs/device', '@pinia/nuxt',
+        'pinia-plugin-persistedstate'],
     googleFonts: {
         families: {
             Poppins: [400, 500, 700],
@@ -11,7 +12,7 @@ export default defineNuxtConfig({
     css: ['@/assets/styles/main.scss'],
     runtimeConfig: {
         API_URL: 'https://movies-tv-shows-database.p.rapidapi.com',
-        API_KEY: 'e63934d7aamsheec2dffb4bbada1p1b81e6jsn4a88d3693a94',
+        API_KEY: '60bca2679bmsh641e8ae1be8d82dp180c95jsn25972c77facc',
         API_HOST: 'movies-tv-shows-database.p.rapidapi.com',
         public: {
             apiBase: '/api'
