@@ -1,14 +1,22 @@
 <script setup lang="ts">
+import {useRoute} from 'vue-router'
+import {useContinue} from "~/stores/continueWatching";
+
 const route = useRoute()
+const {toggle} = useContinue()
 const {id} = route.params
 
-const {data: movies} = useAsyncData('movies', () => null) // берём уже загруженные
-const movie = computed(() => movies.value?.find(m => m.id == id))
+const {data: movie} = await useAsyncData(`movie-${id}`, () =>
+    $fetch(`/api/movies/${id}`)
+)
+
+onMounted(() => {
+  toggle(id)
+})
 </script>
 
 <template>
   <div v-if="movie" class="video-page">
-    <h1>{{ movie.title }}</h1>
 
     <video
         class="video-player"
@@ -26,11 +34,17 @@ const movie = computed(() => movies.value?.find(m => m.id == id))
 <style scoped>
 .video-page {
   padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .video-player {
   width: 100%;
   max-width: 960px;
+  height: 400px;
   border-radius: 16px;
 }
+
 </style>
