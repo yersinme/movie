@@ -17,22 +17,24 @@ const { data: movies } = await useAsyncData('movies', async () => {
   )
 })
 
-const handleToggleFavorite = (id: string | number) => {}
+
+import { useFavouritesStore } from '@/stores/favourites'
+const favs = useFavouritesStore()
 </script>
 
 <template>
-<div class="card-section">
-  <h2>Trending</h2>
-   <div class="card-wrapper">
-    <UiCard
-      v-for="movie in movies"
-      :key="movie.id"
-      v-bind="movie"
-      :is-favorite="false"
-      @toggle-favorite="handleToggleFavorite"
-    />
+  <div class="card-section">
+    <h2>Trending</h2>
+
+    <div class="card-wrapper">
+      <UiCard
+        v-for="m in movies"
+        :key="m.id"
+        v-bind="m"
+        :is-favorite="favs.isFavourite(m.id)"
+      />
+    </div>
   </div>
-</div>
 </template>
 
 <style scoped lang="scss">
