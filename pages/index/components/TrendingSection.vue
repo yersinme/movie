@@ -48,10 +48,27 @@ const isLoading = computed(() => !props.trendingList?.length)
     max-width: calc(25% - 18px);
   }
 }
+@media (max-width: 1024px) {
+  .card-wrapper > * {
+    flex: 1 1 calc(50% - 12px);
+    max-width: calc(50% - 12px);
+  }
+}
+
+@media (max-width: 480px) {
+  .card-section   { padding: 24px 16px; }
+  .card-wrapper   { gap: 16px; }
+
+  .card-wrapper > * {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+}
 
 .card-title {
   color: var(--white);
   font-weight: 600;
   font-size: 20px;
 }
+
 </style>

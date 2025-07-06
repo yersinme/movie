@@ -58,6 +58,17 @@ onMounted(async () => {
   padding-bottom: 65px;
 }
 
+.card-title {
+  color: var(--white);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.empty-text {
+  color: #aaa;
+  padding: 16px;
+}
+
 .card-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -70,12 +81,37 @@ onMounted(async () => {
   }
 }
 
-.card-title {
-  color: var(--white);
+@media (max-width: 1024px) {
+  .card-wrapper > * {
+    flex: 1 1 calc(33.33% - 16px);
+    max-width: calc(33.33% - 16px);
+  }
 }
 
-.empty-text {
-  color: #aaa;
-  padding: 16px;
+@media (max-width: 768px) {
+  .card-section {
+    padding: 32px 16px;
+  }
+
+  .card-header {
+    padding-bottom: 40px;
+  }
+
+  .card-wrapper {
+    gap: 16px;
+  }
+
+  .card-wrapper > * {
+    flex: 1 1 calc(50% - 12px);
+    max-width: calc(50% - 12px);
+  }
 }
+
+@media (max-width: 480px) {
+  .card-wrapper > * {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+}
+
 </style>
